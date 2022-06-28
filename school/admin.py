@@ -11,7 +11,10 @@ class StudentTeacherInlineFormset(BaseInlineFormSet):
         if len(set([form.cleaned_data.get('teacher') for form in self.forms if
                     form.cleaned_data.get('teacher') != None])) != len(
                 [form.cleaned_data.get('teacher') for form in self.forms if form.cleaned_data.get('teacher') != None]):
-            raise ValidationError('Вы не выбрали ни одного учителя')
+            raise ValidationError('Учитель указан более одного раза')
+        if len(set([form.cleaned_data.get('teacher') for form in self.forms if
+                    form.cleaned_data.get('teacher') != None])) < 1:
+            raise ValidationError('Учитель не выбран')
         return super().clean()  # вызываем базовый код переопределяемого метода
 
 
