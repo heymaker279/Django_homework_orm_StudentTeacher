@@ -7,17 +7,12 @@ from .models import Student, Teacher, StudentTeacher
 
 class StudentTeacherInlineFormset(BaseInlineFormSet):
     def clean(self):
-        list_teacher = []
-        for form in self.forms:
-            if 'teacher' in form.cleaned_data.keys():
-                print(form.cleaned_data['teacher'])
-                if form.cleaned_data['teacher'] in list_teacher:
-                    raise ValidationError('Вы уже добавили этого учителя')
-                list_teacher.append(form.cleaned_data['teacher'])
-                print(list_teacher)
-            if len(list_teacher) == 0:
-                raise ValidationError('Вы не выбрали ни одного учителя')
-            return super().clean()  # вызываем базовый код переопределяемого метода
+        print(set([form.cleaned_data.get('teacher') for form in self.forms if form.cleaned_data.get('teacher') != None]))
+        if len(set([form.cleaned_data.get('teacher') for form in self.forms if
+                    form.cleaned_data.get('teacher') != None])) != len(
+                [form.cleaned_data.get('teacher') for form in self.forms if form.cleaned_data.get('teacher') != None]):
+            raise ValidationError('Вы не выбрали ни одного учителя')
+        return super().clean()  # вызываем базовый код переопределяемого метода
 
 
 class StudentTeacherInline(admin.TabularInline):
