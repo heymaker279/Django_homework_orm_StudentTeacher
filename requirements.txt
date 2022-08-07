@@ -1,2 +1,5 @@
 django
 psycopg2-binary
+django-environ==0.9.0
+#nginx==1.21.6
+gunicorn
